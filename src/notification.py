@@ -49,34 +49,36 @@ class NotificationNtfy:
 
     def sunscreen_today_notification(self):
         uv_hours_response = requests.get(url=f"{self.uv_api_url}/sunscreen/hours?location={self.location}")
+        max_uv_response = requests.get(url=f"{self.uv_api_url}/uv/max-today?location={self.location}")
         if uv_hours_response.status_code == 200:
             print(uv_hours_response.content)
             uv_hours = uv_hours_response.json().get("sunscreen_hours", [])
+            max_uv = max_uv_response.json().get("max_uv", 0)
             if uv_hours:
                 start_hour, end_hour = uv_hours[0]
                 if start_hour != 0:
-                    message = f"Today, you should put sunscreen on from hour {start_hour} to hour {end_hour} in {self.location}."
-                    self.send_notification(message, "Sunscreen Reminder", tags=self.location)
+                    message = f"Today, you should put sunscreen on from hour {start_hour} to hour {end_hour} in {self.location}.\nMax UV today is {max_uv}."
+                    self.send_notification(message, "Sunscreen Today", tags=self.location)
                 else:
-                    message = f"No sunscreen needed today in {self.location}."
-                    self.send_notification(message, "Sunscreen Reminder", tags=self.location)
+                    message = f"No sunscreen needed today in {self.location}.\nMax UV today is {max_uv}."
+                    self.send_notification(message, "No Sunscreen Needed", tags=self.location)
         else:
             error_message = f"Error: {uv_hours_response.status_code} - {uv_hours_response.text}"
             self.send_notification(error_message, "Sunscreen Error", priority="high")
             raise Exception(error_message)
 
-if __name__ == "__main__":
-    # Example usage
-    ntfy = NotificationNtfy(location="Los Angeles, USA", ntfy_topic_prefix="jOEp52eCQOXGUYTo")
-    result = ntfy.test_notification()
-    print(ntfy.get_notification_url())
-    # print(result)
+# if __name__ == "__main__":
+#     # Example usage
+#     ntfy = NotificationNtfy(location="Brest, Bretagne", ntfy_topic_prefix="jOEp52eCQOXGUYTo")
+#     # result = ntfy.test_notification()
+#     # print(ntfy.get_notification_url())
+#     # print(result)
 
-    # ntfy.send_notification(
-    #     message="This is a test notification",
-    #     title="Test Notification",
-    #     tags="test,example",
-    #     priority="min"
-    # )
+#     # ntfy.send_notification(
+#     #     message="This is a test notification",
+#     #     title="Test Notification",
+#     #     tags="test,example",
+#     #     priority="min"
+#     # )
 
-    # ntfy.sunscreen_today_notification()
+#     ntfy.sunscreen_today_notification()

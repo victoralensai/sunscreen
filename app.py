@@ -40,5 +40,15 @@ class MainApp:
             print("App stopped!")
 
 if __name__ == "__main__":
-    app = MainApp("Lorient, Bretagne", "jOEp52eCQOXGUYTo")
+
+    # ===== CHANGE CONFIGURATION HERE =====
+    # Set your location and ntfy topic prefix
+    # You can also set the time you want the notification to be sent
+    # Default is 08:00 (8 AM)
+    LOCATION = "Brest, Bretagne" # Be sure to write the location like this: 'City, Region, Country'
+    NTFY_TOPIC_PREFIX = "jOEp52eCQOXGUYTo" # Replace with your ntfy topic prefix, I recommend you to use a random string
+    TIME_TO_SEND = "07:00"  # Time to send the notification, in HH:MM format
+    # ======================================
+    
+    app = MainApp(LOCATION, NTFY_TOPIC_PREFIX, TIME_TO_SEND)
     app.run()

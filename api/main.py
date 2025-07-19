@@ -5,7 +5,7 @@ from config import settings
 app = FastAPI(
     title="Sunscreen Advisor API",
     description="This API tells you if you should put sunscreen today based on UV index.",
-    version="0.1.0",
+    version="1.0.0",
     contact={
         "name": "Victor Jean",
         "url": "https://vctor.me",

@@ -1,4 +1,5 @@
 import requests
+import re
 
 class NotificationNtfy:
     def __init__(self, location: str, ntfy_topic_prefix: str, ntfy_url: str = "https://ntfy.sh", uv_api_url: str = "https://f1.vctor.me"):
@@ -9,7 +10,7 @@ class NotificationNtfy:
 
     def test_notification(self):
         print(f"Testing notification for {self.location} on topic {self.ntfy_topic_prefix}")
-        topic_url = f"{self.ntfy_url}/{self.ntfy_topic_prefix}_{self.location}"
+        topic_url = self.get_notification_url()
 
         headers = {
             "Title": "test notification",
@@ -23,9 +24,15 @@ class NotificationNtfy:
             return {"success": True, "message": "Notification sent successfully"}
         except requests.exceptions.RequestException as e:
             return {"success": False, "error": str(e)}
+        
+    def get_notification_url(self):
+        """
+        Returns the URL for the notification topic.
+        """
+        return f"{self.ntfy_url}/{self.ntfy_topic_prefix}_{re.sub(r'[^A-Za-z]', '', self.location)}"
     
     def send_notification(self, message: str, title: str, tags: str = "", priority: str = "default"):
-        topic_url = f"{self.ntfy_url}/{self.ntfy_topic_prefix}_{self.location}"
+        topic_url = self.get_notification_url()
 
         headers = {
             "Title": title,
@@ -60,8 +67,9 @@ class NotificationNtfy:
 
 if __name__ == "__main__":
     # Example usage
-    ntfy = NotificationNtfy(location="Paris", ntfy_topic_prefix="jOEp52eCQOXGUYTo")
-    # result = ntfy.test_notification()
+    ntfy = NotificationNtfy(location="Los Angeles, USA", ntfy_topic_prefix="jOEp52eCQOXGUYTo")
+    result = ntfy.test_notification()
+    print(ntfy.get_notification_url())
     # print(result)
 
     # ntfy.send_notification(
@@ -71,4 +79,4 @@ if __name__ == "__main__":
     #     priority="min"
     # )
 
-    ntfy.sunscreen_today_notification()
+    # ntfy.sunscreen_today_notification()

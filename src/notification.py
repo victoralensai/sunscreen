@@ -43,6 +43,7 @@ class NotificationNtfy:
         try:
             response = requests.post(topic_url, data=message, headers = headers)
             response.raise_for_status()
+            print(f"Notification sent to {topic_url}")
             return {"success": True, "message": "Notification sent successfully"}
         except requests.exceptions.RequestException as e:
             return {"success": False, "error": str(e)}
@@ -67,9 +68,9 @@ class NotificationNtfy:
             self.send_notification(error_message, "Sunscreen Error", priority="high")
             raise Exception(error_message)
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 #     # Example usage
-#     ntfy = NotificationNtfy(location="Brest, Bretagne", ntfy_topic_prefix="jOEp52eCQOXGUYTo")
+    ntfy = NotificationNtfy(location="Colombes, Ile-de-France", ntfy_topic_prefix="jOEp52eCQOXGxYTo")
 #     # result = ntfy.test_notification()
 #     # print(ntfy.get_notification_url())
 #     # print(result)
@@ -81,4 +82,4 @@ class NotificationNtfy:
 #     #     priority="min"
 #     # )
 
-#     ntfy.sunscreen_today_notification()
+    ntfy.sunscreen_today_notification()

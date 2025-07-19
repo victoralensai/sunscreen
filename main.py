@@ -36,7 +36,7 @@ async def should_i_put_sunscreen_now(location:str):
 @app.get("/uv/max-today")
 async def get_max_uv_today(location:str):
     meteo = Meteo(settings.api_key, location)
-    return {"max_uv": meteo.get_max_uv_today()}
+    return {"max_uv": meteo.max_uv_today()}
 
 @app.get("/sunscreen/hours")
 async def get_sunscreen_hours(location:str):

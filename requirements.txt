@@ -2,3 +2,4 @@ fastapi[all]
 pydantic-settings
 pydantic
 requests
+schedule
